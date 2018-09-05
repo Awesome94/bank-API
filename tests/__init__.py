@@ -26,4 +26,6 @@ class BaseTestMixin(TestCase):
 
     def tearDown(self):
         """Destroy blank bank database after each test"""
+        basedir = os.path.abspath(os.path.dirname(__file__))
         db.drop_all()
+        os.remove(os.path.join(basedir, TEST_DB))
