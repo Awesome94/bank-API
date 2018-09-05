@@ -11,5 +11,5 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 ENV = os.environ.get("ENV")
 
 class BAseConfig(object):
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
     SQLALCHEMY_TRACK_MODIFICATIONS = False

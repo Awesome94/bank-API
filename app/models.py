@@ -20,7 +20,7 @@ class Accounts(db.Model):
     account_type = db.Column(db.String(120), index=True)
     account_number = db.Column(db.Integer)
     balance = db.Column(db.Integer, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 class Events(db.Model):
     """This will keep track of the various events that occur on the API"""
@@ -28,5 +28,5 @@ class Events(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     time_stamp = db.Column(db.DateTime, nullable=False)
     name = db.Column(db.String, unique=False, nullable=False)
-    account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    account_id = db.Column(db.Integer, db.ForeignKey('accounts.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
