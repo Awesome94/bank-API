@@ -3,6 +3,18 @@ import os
 import json
 from app import create_app, db
 
+class BasicTestCase(unittest.TestCase):
+    def test_index(self):
+        """Initial test to ensure that flask was set up correctly"""
+        tester = app.test_client(self)
+        response = tester.get('/', content_type='html/text')
+        self.assertEqual(response.status_code, 200)
+
+    def test_database(self):
+        """Initial test to make sure that the database exists"""
+        tester = os.path.exists("bankapi.db")
+        self.assertTrue(tester)
+
 class BankApiTestCase(unittest.TestCase):
     """Represents the Bank API test case"""
 
