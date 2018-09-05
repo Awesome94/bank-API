@@ -19,7 +19,7 @@ class BaseConfig(object):
 class ProductionConfig(BaseConfig):
     pass
 class StagingConfig(BaseConfig):
-    DEBUG = False
+    DEBUG = True
     TESTING = True
 class DevelopmentConfig(BaseConfig):
     DEBUG = False
