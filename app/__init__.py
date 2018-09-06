@@ -1,6 +1,7 @@
 from flask import Flask, request, g
 from config import BaseConfig
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from dotenv import load_dotenv, find_dotenv
 
