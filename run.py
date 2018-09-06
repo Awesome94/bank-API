@@ -13,4 +13,5 @@ elif environ.get('ENV') == 'LOCAL': print(f'{GREEN}using local{RESET}')
 elif environ.get('ENV') == 'TESTING': print(f'{GREEN}Using Testing{RESET}')
 else: print(f'{CYAN}using staging{RESET}')
 
+
 app.run(debug=True, threaded=True)

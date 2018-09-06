@@ -10,23 +10,23 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 ENV = os.environ.get("ENV")
 
-class BaseConfig(object):
+class Config(object):
     DEBUG = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-class ProductionConfig(BaseConfig):
+class ProductionConfig(Config):
     pass
 
-class StagingConfig(BaseConfig):
+class StagingConfig(Config):
     DEBUG = True
     TESTING = True
 
-class DevelopmentConfig(BaseConfig):
-    DEBUG = False
+class DevelopmentConfig(Config):
+    DEBUG = True
     TESTING = True
-    
-class TestingConfig(BaseConfig):
+
+class TestingConfig(Config):
     DEBUG = False
     TESTING = True
