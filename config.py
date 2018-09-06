@@ -18,12 +18,15 @@ class BaseConfig(object):
 
 class ProductionConfig(BaseConfig):
     pass
+
 class StagingConfig(BaseConfig):
     DEBUG = True
     TESTING = True
+
 class DevelopmentConfig(BaseConfig):
     DEBUG = False
     TESTING = True
+    
 class TestingConfig(BaseConfig):
     DEBUG = False
     TESTING = True
