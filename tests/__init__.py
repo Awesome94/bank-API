@@ -22,6 +22,16 @@ class BaseTestMixin(TestCase):
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+ \
             os.path.join(basedir, TEST_DB)
         self.app = app.test_client()
+        self.user_data = {
+            "firstname":"awesome1",
+        	"email": "m2@gmeal.com",
+        	"lastname":"david",
+        	"password_hash":"meandme",
+        	"user_type":"bank_teller",
+        	"id_type":"passport",
+        	"id_number":"b1416932",
+        	"phone_number":"093101313"
+        }
         db.create_all()
 
     def tearDown(self):

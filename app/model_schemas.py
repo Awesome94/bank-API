@@ -1,11 +1,12 @@
 from app.models import Accounts, User, Events
 from app import ma
 
+
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('email', 'date_created', 'firstname')
+        fields = ('email', 'lastname','user_type','id_type','id_number','phone_number', 'firstname')
 
-class AccountSchema(ma.ModelSchema):
+class AccountSchema(ma.Schema):
     class Meta:
         model = Accounts
 

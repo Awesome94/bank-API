@@ -42,7 +42,7 @@ class User(db.Model):
         return User.query.all()
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {}>'.format(self.firstname)
 
 class Accounts(db.Model):
     """Contains all the account details owned by the users"""
