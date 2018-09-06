@@ -5,7 +5,6 @@ from flask.views import MethodView
 from app.helpers import response, register, withdraw, check_balance, deposit
 from flask import Flask, jsonify
 
-
 class Login(MethodView):
     def post(self):
         return "login successful"
@@ -20,7 +19,7 @@ class UserApi(MethodView):
 
     def get(self, user_id):
         if user_id is None:
-            all_users = db.session.query(User).all()
+            all_users = User.get_all()
             result = user_schema.dump(all_users)
             return jsonify(result.data)
         else:
@@ -70,8 +69,8 @@ user_view = UserApi.as_view('user_api')
 app.add_url_rule('/v1/users/', defaults={'user_id': None},
                  view_func=user_view, methods=['GET'])
 
-app.add_url_rule('/v1/register', view_func=user_view, methods=['POST'])
-app.add_url_rule('/v1/register/all', view_func=register, methods=['POST'])
+app.add_url_rule('/v1/register', view_func=register, methods=['POST'])
+# app.add_url_rule('/v1/register/all', view_func=register, methods=['POST'])
 app.add_url_rule('/v1/users/<int:user_id>', view_func=user_view, methods=['GET'])
 
 accounts_view = Account.as_view('accounts_api')
