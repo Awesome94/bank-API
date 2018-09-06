@@ -4,28 +4,28 @@ from enum import IntEnum, Enum
 
 class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    firstname = db.Column(db.String, nullable=False)
-    lastname = db.Column(db.String, nullable=False)
-    password = db.Column(db.String(128))
-    user_type = db.Column(db.String(120), index=True)
-    id_type = db.Column(db.String, nullable=False)
-    id_number = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.Integer, nullable=True)
 
     class Type(IntEnum):
         client = 1
         bank_teller = 2
         admin = 3
 
-    def __init__(self, email, firstname, lastname, password, user_type, id_type, id_number, phone_number):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    firstname = db.Column(db.String, nullable=False)
+    lastname = db.Column(db.String, nullable=False)
+    password = db.Column(db.String(128))
+    type = db.Column(db.SmallInteger, default=Type.client.value, nullable=False)
+    id_type = db.Column(db.String, nullable=False)
+    id_number = db.Column(db.String, nullable=False)
+    phone_number = db.Column(db.Integer, nullable=True)
+
+    def __init__(self, email, firstname, lastname, password, id_type, id_number, phone_number):
         """Initialize the user with an email and a password."""
         self.email = email
         self.password = Bcrypt().generate_password_hash(password).decode()
         self.firstname = firstname
         self.lastname = lastname
-        self.user_type = db.Column(db.SmallInteger, default=Type.residential.value, nullable=False)
         self.id_type = id_type
         self.id_number = id_number
         self.phone_number = phone_number
@@ -60,14 +60,14 @@ class Accounts(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     user = db.relationship(
-        'MoveTask',
+        'User',
         backref=db.backref('accounts', lazy='dynamic'),
         uselist=False
     )
 
-    def __init__(self, user_id, holder, account_number, ):
+    def __init__(self, user_id, account_name, account_number, ):
         self.user_id = user_id
-        self.holder = holder
+        self.account_name = account_name
         self.account_number = account_number
 
     def save(self):

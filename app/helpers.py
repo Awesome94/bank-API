@@ -26,12 +26,12 @@ def register():
             id_number = post_data.get('id_number')
             phone_number = post_data.get('phone_number')
             user = User(email=email, firstname=firstname, lastname=lastname,
-                    password=password, user_type=user_type,
+                    password=password,
                     id_type=id_type, id_number=id_number, phone_number=phone_number
             )
             user.save()
             account_name  = firstname+ ' ' +lastname
-            account=Accounts(user_id=user.id, holder=account_name, account_number=generate_account_number())
+            account=Accounts(user_id=user.id, account_name=account_name, account_number=generate_account_number())
             account.save()
             return response('success', 'account created', 201)
         except Exception as e:
@@ -58,10 +58,22 @@ def withdraw(account_id):
     return "withdraw successful"
 
 def deposit(account_id):
-    return "withdraw successful"
+    account_number = request.json.get('account_number')
+    amount = request.json.get('amount')
+    accounts = Accounts.get_all()
+    for account in accounts:
+        if account.account_number == account_number and account.id == id:
+            account.balance = account.balance+amount
+            account.Save()
+        else:
+            return "invalid transaction"
+
+    account_holder = User.query.filter_by(email=request.json.get('email')).first()
+    return "deposited successful"
 
 def funds_transfer(account_id):
     return "funds transfer successful"
 
 def check_balance(account_id):
-    return "you have no balance"
+    account = Accounts.query.filter_by(id=account_id)
+    return "your balance is {account.balance} "

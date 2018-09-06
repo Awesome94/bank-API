@@ -26,9 +26,9 @@ class TestLoadsAllEndpoints(BaseTestMixin):
         response = self.client.post("/v1/account/1/withdraw")
         self.assertEqual(response.status_code, 200)
 
-    def test_deposits_on_specific_account(self):
-        response = self.client.post("/v1/account/1/deposit")
-        self.assertEqual(response.status_code, 200)
+    # def test_deposits_on_specific_account(self):
+    #     response = self.client.post("/v1/account/1/deposit")
+    #     self.assertEqual(response.status_code, 200)
 
     def test_loads_balance_from_specific_account(self):
         response = self.client.get("/v1/account/1/balance")
