@@ -19,3 +19,5 @@ pytest~=3.5.1
 pytest-flask==0.10.0
 python-dotenv~=0.8.2
 twilio~=6.15.1
+marshmallow==2.15.4
+marshmallow-sqlalchemy==0.14.1
