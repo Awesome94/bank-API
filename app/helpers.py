@@ -9,7 +9,6 @@ def response(status, message, status_code):
 
 def register():
     # query if the user exists
-    print("this is final call", data)
     user = User.query.filter_by(email=request.json.get('email')).first()
 
     if not user:
