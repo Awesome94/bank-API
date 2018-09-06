@@ -1,6 +1,9 @@
-from app import app, models
+from app import app, db
+from app.models import Accounts, User, Events
+from app.model_schemas import user_schema, AccountSchema
 from flask.views import MethodView
-from app.helpers import response
+from app.helpers import response, register, withdraw, check_balance, deposit
+from flask import Flask, jsonify
 
 
 class Login(MethodView):
@@ -13,18 +16,17 @@ class LogOut(MethodView):
         return "logout successful"
         pass
 
-def register():
-    return "got it"
-
-class User(MethodView):
+class UserApi(MethodView):
 
     def get(self, user_id):
         if user_id is None:
-            print(user_id)
-            return "all users"
+            all_users = db.session.query(User).all()
+            result = user_schema.dump(all_users)
+            return jsonify(result.data)
         else:
-            print(user_id)
-            return "one users"
+            user = db.session.query(User).filter_by(id=user_id)
+            result = user_schema.dump(user)
+            return jsonify(result.data)
 
     def post(self):
         return "user created"
@@ -52,11 +54,8 @@ class Account(MethodView):
         return "account created"
         pass
 
-    # def post('v1/', account_id):
-    #     return "account created"
-    #     pass
-
     def put(self, account_id):
+        return "account updated"
         pass
 
 
@@ -67,7 +66,7 @@ app.add_url_rule('/v1/login',view_func=auth_view, methods=['POST'])
 end_view = LogOut.as_view('end_session')
 app.add_url_rule('/v1/logout',view_func=end_view, methods=['POST'])
 
-user_view = User.as_view('user_api')
+user_view = UserApi.as_view('user_api')
 app.add_url_rule('/v1/users/', defaults={'user_id': None},
                  view_func=user_view, methods=['GET'])
 
@@ -80,6 +79,9 @@ app.add_url_rule('/v1/accounts/', defaults={'account_id': None},
                  view_func=accounts_view, methods=['GET'])
 app.add_url_rule('/v1/accounts/', view_func=user_view, methods=['POST'])
 app.add_url_rule('/v1/account/<int:account_id>', view_func=user_view, methods=['GET'])
+app.add_url_rule('/v1/account/<int:account_id>/withdraw', view_func=withdraw, methods=['POST'])
+app.add_url_rule('/v1/account/<int:account_id>/balance', view_func=check_balance, methods=['GET'])
+app.add_url_rule('/v1/account/<int:account_id>/deposit', view_func=deposit, methods=['POST'])
 
 
 @app.errorhandler(404)

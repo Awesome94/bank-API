@@ -10,10 +10,7 @@ flask-migrate
 Flask-Script
 flask-login
 flask-jwt-extended
-itsdangerous
-boto3
 flask-cors
-stripe==1.84.1
 Flask-Testing==0.7.1
 pytest~=3.5.1
 pytest-flask==0.10.0

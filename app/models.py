@@ -12,6 +12,9 @@ class User(db.Model):
     id_number = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.Integer, nullable=True)
 
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
+
 class Accounts(db.Model):
     """Contains all the account details owned by the users"""
     __tablename__ = 'accounts'
