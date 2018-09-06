@@ -15,8 +15,10 @@ class TestLoadsAllEndpoints(BaseTestMixin, TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_registers_user(self):
-        response = self.client.post("/v1/register")
-        self.assertEqual(response.status_code, 200)
+        res = self.client.post("/v1/register", data=dict(firstname="awesl"))
+        result = json.loads(res.data.decode())
+        self.assertEqual(result['message'], "You registered successfully.")
+        self.assertEqual(res.status_code, 201)
 
     def test_withdraws_from_specific_account(self):
         response = self.client.post("/v1/account/1/withdraw")

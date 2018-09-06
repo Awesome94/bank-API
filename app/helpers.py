@@ -9,9 +9,7 @@ def response(status, message, status_code):
 
 def register():
     # query if the user exists
-    data = request.data
-    dataDict = json.loads(data)
-    print(request.json)
+    print("this is final call", data)
     user = User.query.filter_by(email=request.json.get('email')).first()
 
     if not user:
@@ -34,10 +32,10 @@ def register():
             return response('success', 'account created', 201)
         except Exception as e:
             #In case of any errors, return a String message containing the error
-            response = {
+            result = {
                 'message': str(e)
             }
-            return make_response(jsonify(response)), 401
+            return make_response(jsonify(result)), 401
     else:
         # User is Already in the database so we do not want to register them twice
         return response('Already exists', 'Please Login', 202)
