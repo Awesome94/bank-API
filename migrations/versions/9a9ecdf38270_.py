@@ -22,6 +22,7 @@ def upgrade():
     op.drop_index('ix_accounts_email', table_name='accounts')
     op.drop_column('accounts', 'account_type')
     op.drop_column('accounts', 'email')
+    op.add_column('accounts', sa.Column('account_number', sa.String(length=128), nullable=True))
     op.add_column('users', sa.Column('password', sa.String(length=128), nullable=True))
     op.drop_column('users', 'password_hash')
     # ### end Alembic commands ###

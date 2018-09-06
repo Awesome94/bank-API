@@ -1,5 +1,6 @@
 from flask import jsonify, make_response, request, url_for, json
-from app.models import User
+from app.models import User, Accounts
+from app import db
 import random
 
 def response(status, message, status_code):
@@ -19,19 +20,19 @@ def register():
             email = post_data.get('email')
             firstname = post_data.get('firstname')
             lastname = post_data.get('lastname')
-            password_hash = post_data.get('password_hash')
+            password = post_data.get('password')
             user_type = post_data.get('user_type')
             id_type = post_data.get('id_type')
             id_number = post_data.get('id_number')
             phone_number = post_data.get('phone_number')
             user = User(email=email, firstname=firstname, lastname=lastname,
-                    password_hash=password_hash, user_type=user_type,
+                    password=password, user_type=user_type,
                     id_type=id_type, id_number=id_number, phone_number=phone_number
             )
             user.save()
-            account = Account
-            account.account_number = generate_account_number()
-            account.type = post_data.get('account_type')
+            account_name  = firstname+ ' ' +lastname
+            account=Accounts(user_id=user.id, holder=account_name, account_number=generate_account_number())
+            account.save()
             return response('success', 'account created', 201)
         except Exception as e:
             #In case of any errors, return a String message containing the error
@@ -44,7 +45,7 @@ def register():
         return response('Already exists', 'Please Login', 202)
 
 def generate_account_number():
-  account_numbers = Account.get_all()
+  account_numbers = Accounts.get_all()
   rand_account_number = random.randint(10000000000,10000039999)
   if rand_account_number not in account_numbers:
     new_account_number = '11'+ f'{rand_account_number}'

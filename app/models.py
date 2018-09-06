@@ -1,5 +1,6 @@
 from app import db
 from flask_bcrypt import Bcrypt
+from enum import IntEnum, Enum
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -13,13 +14,18 @@ class User(db.Model):
     id_number = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.Integer, nullable=True)
 
+    class Type(IntEnum):
+        client = 1
+        bank_teller = 2
+        admin = 3
+
     def __init__(self, email, firstname, lastname, password, user_type, id_type, id_number, phone_number):
         """Initialize the user with an email and a password."""
         self.email = email
         self.password = Bcrypt().generate_password_hash(password).decode()
         self.firstname = firstname
         self.lastname = lastname
-        self.user_type = user_type
+        self.user_type = db.Column(db.SmallInteger, default=Type.residential.value, nullable=False)
         self.id_type = id_type
         self.id_number = id_number
         self.phone_number = phone_number
@@ -48,18 +54,28 @@ class Accounts(db.Model):
     """Contains all the account details owned by the users"""
     __tablename__ = 'accounts'
     id = db.Column(db.Integer, primary_key=True)
-    account_number = db.Column(db.Integer)
+    account_name = db.Column(db.String)
+    account_number = db.Column(db.String(128))
     balance = db.Column(db.Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, account_number, account_type, account_balance):
-        self.account_type = account_type
+    user = db.relationship(
+        'MoveTask',
+        backref=db.backref('accounts', lazy='dynamic'),
+        uselist=False
+    )
+
+    def __init__(self, user_id, holder, account_number, ):
+        self.user_id = user_id
+        self.holder = holder
         self.account_number = account_number
-        self.account_balance = account_balance
 
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+    def get_all():
+        return Accounts.query.all()
 
     def __repr__(self):
         return '<Account balance {}>'.format(self.balance)
