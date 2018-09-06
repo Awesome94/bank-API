@@ -1,5 +1,6 @@
 from flask import jsonify, make_response, request, url_for, json
 from app.models import User
+import random
 
 def response(status, message, status_code):
     return make_response(jsonify({
@@ -28,6 +29,9 @@ def register():
                     id_type=id_type, id_number=id_number, phone_number=phone_number
             )
             user.save()
+            account = Account
+            account.account_number = generate_account_number()
+            account.type = post_data.get('account_type')
             return response('success', 'account created', 201)
         except Exception as e:
             #In case of any errors, return a String message containing the error
@@ -39,9 +43,15 @@ def register():
         # User is Already in the database so we do not want to register them twice
         return response('Already exists', 'Please Login', 202)
 
+def generate_account_number():
+  account_numbers = Account.get_all()
+  rand_account_number = random.randint(10000000000,10000039999)
+  if rand_account_number not in account_numbers:
+    new_account_number = '11'+ f'{rand_account_number}'
+    return new_account_number
+  else:
+    return generate_account_number()
 
-
-    return "got it"
 
 def withdraw(account_id):
     return "withdraw successful"

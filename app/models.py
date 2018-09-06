@@ -7,16 +7,16 @@ class User(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     firstname = db.Column(db.String, nullable=False)
     lastname = db.Column(db.String, nullable=False)
-    password_hash = db.Column(db.String(128))
+    password = db.Column(db.String(128))
     user_type = db.Column(db.String(120), index=True)
     id_type = db.Column(db.String, nullable=False)
     id_number = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, email, firstname, lastname, password_hash, user_type, id_type, id_number, phone_number):
+    def __init__(self, email, firstname, lastname, password, user_type, id_type, id_number, phone_number):
         """Initialize the user with an email and a password."""
         self.email = email
-        self.password_hash = Bcrypt().generate_password_hash(password_hash).decode()
+        self.password = Bcrypt().generate_password_hash(password).decode()
         self.firstname = firstname
         self.lastname = lastname
         self.user_type = user_type
@@ -48,8 +48,6 @@ class Accounts(db.Model):
     """Contains all the account details owned by the users"""
     __tablename__ = 'accounts'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    account_type = db.Column(db.String(120), index=True)
     account_number = db.Column(db.Integer)
     balance = db.Column(db.Integer, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
