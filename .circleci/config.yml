@@ -24,7 +24,6 @@ jobs:
       - run:
           command: |
             . venv/bin/activate
-            python commands.py create_db
       - run:
           command: |
             . venv/bin/activate
