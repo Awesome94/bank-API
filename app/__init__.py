@@ -8,10 +8,9 @@ from dotenv import load_dotenv, find_dotenv
 app = Flask(__name__)
 load_dotenv(find_dotenv())
 
-app.config["APPLICATION_ROOT"] = "/v1"
-
 app.config.from_object(BaseConfig)
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 migrate = Migrate(app, db)
 
