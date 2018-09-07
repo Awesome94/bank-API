@@ -1,1 +1,1 @@
-web: flask db migrate; python run.py
+worker: flask db migrate; python run.py
