@@ -10,7 +10,7 @@ This is a simple RestApi for performing basic bank tasks such as:
 
 ## Installation
 
- ** Requirements: **
+ ## Requirements:
 
 * Python 3.6
 * pip
@@ -38,7 +38,9 @@ Install using `pip`:
 
     NB: Make sure you have FLASK_APP set as `app/__init__.py`.
 
+
 4. Start your application
+
 
 
     $ python run run.py
