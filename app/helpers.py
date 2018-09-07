@@ -2,12 +2,21 @@ from flask import jsonify, make_response, request, url_for, json
 from app.models import User, Accounts
 from app import db
 import random
+import hashlib
+
 
 def response(status, message, status_code):
     return make_response(jsonify({
         'status': status,
         'message': message
     })), status_code
+
+def valid_password(userid, password):
+    user = get_user(userid)
+    pw_hash = hashlib.sha256(password).hexdigest()
+    if user.hash == pw_hash:
+        return True
+    return False
 
 def register():
     # query if the user exists
@@ -53,25 +62,20 @@ def generate_account_number():
   else:
     return generate_account_number()
 
-
 def withdraw(account_id):
-    return "withdraw successful"
-
-# def deposit(account_id):
-#     account_number = request.json.get('account_number')
-#     amount = request.json.get('amount')
-#     client_id = request.json.get('user_id')
-#     print(account_number, amount, client_id, account_id)
-#     accounts = Accounts.get_all()
-#     for account in accounts:
-#         if client_id == account.user_id:
-#             if account.account_number == account_number and account.id == id:
-#                 account.balance = account.balance+amount
-#                 account.Save()
-#             else:
-#                 return response('Transaction Denied', 'Try again', 401)
-#
-#         return "incorrect details"
+    if account_id is not None:
+        account_number = request.json.get('account_number')
+        amount = request.json.get('amount')
+        pin = request.json.get('pin')
+        account = Accounts.query.filter_by(account_number=account_number).first() ## TODO: modify query to get current users account
+        if account:
+            amount_to_withdraw = (int(amount))
+            if amount_to_withdraw > account.balance:
+                return "cannot withdraw more than balance"
+            else:
+                account.balance = account.balance - amount_to_withdraw
+                account.save()
+                return "Transaction successful"
 
 def funds_transfer(account_id):
     return "funds transfer successful"

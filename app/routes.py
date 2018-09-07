@@ -54,8 +54,6 @@ class Account(MethodView):
             account_number = request.json.get('account_number')
             amount = request.json.get('amount')
             client_id = request.json.get('user_id')
-            print(account_number, amount, client_id, account_id)
-            accounts = Accounts.get_all()
             account = Accounts.query.filter_by(account_number=account_number, user_id=client_id).first()
             if account:
                 amount_to_deposit = (int(amount))
@@ -63,7 +61,7 @@ class Account(MethodView):
                 account.save()
                 return "balance updated"
             return "invalid account details do not match"
-            
+
     def put(self, account_id):
         return "account updated"
         pass
@@ -81,16 +79,24 @@ app.add_url_rule('/v1/users/', defaults={'user_id': None},
                  view_func=user_view, methods=['GET'])
 
 app.add_url_rule('/v1/register', view_func=register, methods=['POST'])
-# app.add_url_rule('/v1/register/all', view_func=register, methods=['POST'])
 app.add_url_rule('/v1/users/<int:user_id>', view_func=user_view, methods=['GET'])
 
 accounts_view = Account.as_view('accounts_api')
 app.add_url_rule('/v1/accounts/', defaults={'account_id': None},
                  view_func=accounts_view, methods=['GET'])
-app.add_url_rule('/v1/accounts/', view_func=user_view, methods=['POST'])
-app.add_url_rule('/v1/account/<int:account_id>', view_func=user_view, methods=['GET'])
-app.add_url_rule('/v1/account/<int:account_id>/withdraw', view_func=withdraw, methods=['POST'])
-app.add_url_rule('/v1/account/<int:account_id>/balance', view_func=check_balance, methods=['GET'])
+
+app.add_url_rule('/v1/accounts/',
+                 view_func=user_view, methods=['POST'])
+
+app.add_url_rule('/v1/account/<int:account_id>',
+                 view_func=user_view, methods=['GET'])
+
+app.add_url_rule('/v1/account/withdraw/<int:account_id>',
+                 view_func=withdraw, methods=['POST'])
+
+app.add_url_rule('/v1/account/<int:account_id>/balance',
+                 view_func=check_balance, methods=['GET'])
+
 app.add_url_rule('/v1/account/deposit/<int:account_id>',
                  view_func=accounts_view, methods=['POST'])
 

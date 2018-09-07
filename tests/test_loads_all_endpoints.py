@@ -24,7 +24,7 @@ class TestLoadsAllEndpoints(BaseTestMixin):
 
     def test_withdraws_from_specific_account(self):
         response = self.client.post("/v1/account/1/withdraw")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 404)
 
     def test_deposits_on_specific_account(self):
         data=dict(account_number="112000000212", user_id=1, amount=2000 )
