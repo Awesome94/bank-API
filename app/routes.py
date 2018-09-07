@@ -2,8 +2,8 @@ from app import app, db
 from app.models import Accounts, User, Events
 from app.model_schemas import user_schema, AccountSchema
 from flask.views import MethodView
-from app.helpers import response, register, withdraw, check_balance, deposit
-from flask import Flask, jsonify
+from app.helpers import response, register, withdraw, check_balance
+from flask import Flask, jsonify, request
 
 class Login(MethodView):
     def post(self):
@@ -49,9 +49,24 @@ class Account(MethodView):
     def delete(self, account_id):
         return "account deleted"
 
-    def post(self):
-        return "account created"
-        pass
+    def post(self, account_id):
+        if account_id is not None:
+            account_number = request.json.get('account_number')
+            amount = request.json.get('amount')
+            client_id = request.json.get('user_id')
+            print(account_number, amount, client_id, account_id)
+            accounts = Accounts.get_all()
+            for account in accounts:
+                print(account.account_number == account_number)
+                print(account_id, account.id)
+                if int(client_id) == int(account.user_id):
+                    if account.account_number == account_number and account.id == account_id:
+                        amount_to_deposit = (int(amount))
+                        account.balance = account.balance + amount_to_deposit
+                        account.save()
+                        return "balance updated"
+                    return "invalid account details do not match"
+            return "invalid Transaction"
 
     def put(self, account_id):
         return "account updated"
@@ -80,7 +95,8 @@ app.add_url_rule('/v1/accounts/', view_func=user_view, methods=['POST'])
 app.add_url_rule('/v1/account/<int:account_id>', view_func=user_view, methods=['GET'])
 app.add_url_rule('/v1/account/<int:account_id>/withdraw', view_func=withdraw, methods=['POST'])
 app.add_url_rule('/v1/account/<int:account_id>/balance', view_func=check_balance, methods=['GET'])
-app.add_url_rule('/v1/account/<int:account_id>/deposit', view_func=deposit, methods=['POST'])
+app.add_url_rule('/v1/account/deposit/<int:account_id>',
+                 view_func=accounts_view, methods=['POST'])
 
 
 @app.errorhandler(404)

@@ -57,19 +57,21 @@ def generate_account_number():
 def withdraw(account_id):
     return "withdraw successful"
 
-def deposit(account_id):
-    account_number = request.json.get('account_number')
-    amount = request.json.get('amount')
-    accounts = Accounts.get_all()
-    for account in accounts:
-        if account.account_number == account_number and account.id == id:
-            account.balance = account.balance+amount
-            account.Save()
-        else:
-            return "invalid transaction"
-
-    account_holder = User.query.filter_by(email=request.json.get('email')).first()
-    return "deposited successful"
+# def deposit(account_id):
+#     account_number = request.json.get('account_number')
+#     amount = request.json.get('amount')
+#     client_id = request.json.get('user_id')
+#     print(account_number, amount, client_id, account_id)
+#     accounts = Accounts.get_all()
+#     for account in accounts:
+#         if client_id == account.user_id:
+#             if account.account_number == account_number and account.id == id:
+#                 account.balance = account.balance+amount
+#                 account.Save()
+#             else:
+#                 return response('Transaction Denied', 'Try again', 401)
+#
+#         return "incorrect details"
 
 def funds_transfer(account_id):
     return "funds transfer successful"
