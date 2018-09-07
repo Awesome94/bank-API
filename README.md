@@ -2,6 +2,8 @@
 
 Bank RestFul APIs built with Flask and Python.
 
+API public documentation can be found here. https://bit.ly/2CrOv0K
+
 ## Overview
 This is a simple RestApi for performing basic bank tasks such as:
     - Register and get account number.
