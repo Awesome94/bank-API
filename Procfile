@@ -1,1 +1,1 @@
-worker: flask db migrate; python run.py
+web: gunicorn -w 4 app:app
