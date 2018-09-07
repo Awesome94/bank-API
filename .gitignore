@@ -105,5 +105,6 @@ venv.bak/
 
 certs/
 migrations_local/
+migrations/
 
 tests/test.db

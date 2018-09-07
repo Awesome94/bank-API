@@ -1,1 +1,1 @@
-web: gunicorn -w 4 app:app
+web: flask db init; flask db migrate; flask db upgrade; python3 run.py
