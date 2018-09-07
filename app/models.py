@@ -44,6 +44,9 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def get_user(id):
+        return User.query.filter_by(id=id)
+
     def get_all():
         return User.query.all()
 
@@ -65,7 +68,7 @@ class Accounts(db.Model):
         uselist=False
     )
 
-    def __init__(self, user_id, account_name, account_number, ):
+    def __init__(self, user_id, account_name, account_number):
         self.user_id = user_id
         self.account_name = account_name
         self.account_number = account_number
@@ -73,6 +76,9 @@ class Accounts(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+    def get_user_account(id):
+        return Accounts.query.filter_by(user_id=id)
 
     def get_all():
         return Accounts.query.all()
