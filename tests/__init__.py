@@ -26,7 +26,7 @@ class BaseTestMixin(TestCase):
             "firstname":"awesome1",
         	"email": "m2@gmeal.com",
         	"lastname":"david",
-        	"password_hash":"meandme",
+        	"password":"meandme",
         	"user_type":"bank_teller",
         	"id_type":"passport",
         	"id_number":"b1416932",
