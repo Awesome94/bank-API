@@ -56,18 +56,14 @@ class Account(MethodView):
             client_id = request.json.get('user_id')
             print(account_number, amount, client_id, account_id)
             accounts = Accounts.get_all()
-            for account in accounts:
-                print(account.account_number == account_number)
-                print(account_id, account.id)
-                if int(client_id) == int(account.user_id):
-                    if account.account_number == account_number and account.id == account_id:
-                        amount_to_deposit = (int(amount))
-                        account.balance = account.balance + amount_to_deposit
-                        account.save()
-                        return "balance updated"
-                    return "invalid account details do not match"
-            return "invalid Transaction"
-
+            account = Accounts.query.filter_by(account_number=account_number, user_id=client_id).first()
+            if account:
+                amount_to_deposit = (int(amount))
+                account.balance = account.balance + amount_to_deposit
+                account.save()
+                return "balance updated"
+            return "invalid account details do not match"
+            
     def put(self, account_id):
         return "account updated"
         pass
