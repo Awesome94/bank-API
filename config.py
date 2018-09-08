@@ -15,7 +15,7 @@ class Config(object):
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET=os.environ.get("SECRET")
+    SECRET_KEY=os.environ.get("SECRET_KEY")
 
 class ProductionConfig(Config):
     pass

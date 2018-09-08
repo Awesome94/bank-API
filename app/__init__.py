@@ -1,5 +1,4 @@
 from flask import Flask, request, g
-# from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from marshmallow import Schema, fields, pprint

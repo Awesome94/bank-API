@@ -1,15 +1,62 @@
 from flask import jsonify, make_response, request, url_for, json
 from app.models import User, Accounts
-from app import db
+from app import db, app
 import random
 import hashlib
+from functools import wraps
+import jwt
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+        if not token:
+            return jsonify({'message': 'Token is missing!'}), 403
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'])
+            print(data)
+            current_user = User.query.filter_by(id=data['sub'])
+        except:
+            return jsonify({'message': 'Token is invalid'}), 403
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
+
+@app.route('/v1/unprotected')
+def unprotected():
+    return jsonify({'message': 'Anyone can view this!'})
+
+@app.route('/v1/protected')
+@token_required
+def protected():
+    return jsonify({'message': 'For people with valid tokens!'})
 
 def response(status, message, status_code):
     return make_response(jsonify({
         'status': status,
         'message': message
     })), status_code
+
+@app.errorhandler(404)
+def route_not_found(e):
+    return response('failed', 'Endpoint not found', 404)
+
+@app.errorhandler(405)
+def method_not_found(e):
+    """
+    Custom response for methods not allowed for the requested URLs
+    """
+    return response('failed', 'The method is not allowed for the requested URL', 405)
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    """
+    Return a custom message for a 500 internal error
+    """
+    return response('failed', 'Internal server error', 500)
 
 def valid_password(userid, password):
     user = get_user(userid)
@@ -61,6 +108,23 @@ def generate_account_number():
     return new_account_number
   else:
     return generate_account_number()
+
+@token_required
+def change_use_type(current_user, _id):
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({"No User found"})
+    user.type = request.json(type)
+    db.session.commit()
+    return jsonify({"user status has been updated"})
+
+def delete_user(userid):
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({"message: no User found"})
+    db.session.delete(user)
+    db.session.commit()
+
 
 def withdraw(account_id):
     if account_id is not None:
