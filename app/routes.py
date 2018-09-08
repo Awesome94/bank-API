@@ -2,11 +2,20 @@ from app import app, db
 from app.models import Accounts, User, Events
 from app.model_schemas import user_schema, AccountSchema
 from flask.views import MethodView
-from app.helpers import response, register, withdraw, check_balance
+from app.helpers import response, register, withdraw, check_balance, token_required
 from flask import Flask, jsonify, request, make_response
+import jwt
+from app.data import data
+
+class HomeView(MethodView):
+    def get(self):
+        return jsonify({
+            '/v1': data
+        }), 200
 
 class LoginView(MethodView):
     def post(self):
+        auth = request.authorization
         try:
             # Get the user object using their email
             user = User.query.filter_by(email=request.json.get('email')).first()
@@ -16,7 +25,9 @@ class LoginView(MethodView):
                 # Generate the access token. This will be used as the authorization header
 
                 access_token = user.generate_token(user.id)
+
                 if access_token:
+                    print(access_token)
                     response = {
                         'message': 'You logged in successfully.',
                         'access_token': access_token.decode()
@@ -43,8 +54,8 @@ class LogOut(MethodView):
         pass
 
 class UserView(MethodView):
-
-    def get(self, user_id):
+    decorators = [token_required]
+    def get(current_user, self, user_id):
         if user_id is None:
             all_users = User.get_all()
             result = user_schema.dump(all_users)
@@ -95,6 +106,9 @@ class AccountView(MethodView):
 
 
 # register = User.as_view('register')
+home_view = HomeView.as_view('home')
+app.add_url_rule('/',view_func=home_view, methods=['GET'])
+
 auth_view = LoginView.as_view('authentication')
 app.add_url_rule('/v1/login',view_func=auth_view, methods=['POST'])
 
@@ -126,22 +140,3 @@ app.add_url_rule('/v1/account/<int:account_id>/balance',
 
 app.add_url_rule('/v1/account/deposit/<int:account_id>',
                  view_func=accounts_view, methods=['POST'])
-
-
-@app.errorhandler(404)
-def route_not_found(e):
-    return response('failed', 'Endpoint not found', 404)
-
-@app.errorhandler(405)
-def method_not_found(e):
-    """
-    Custom response for methods not allowed for the requested URLs
-    """
-    return response('failed', 'The method is not allowed for the requested URL', 405)
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    """
-    Return a custom message for a 500 internal error
-    """
-    return response('failed', 'Internal server error', 500)

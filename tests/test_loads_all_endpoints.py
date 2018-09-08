@@ -7,13 +7,13 @@ class TestLoadsAllEndpoints(BaseTestMixin):
     """
     Checks that all end points respond with 200 status_code when called.
     """
-    def test_loads_all_users(self):
+    def test_does_not_loads_all_users_without_token(self):
         response = self.client.get("/v1/users/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 403)
 
-    def test_gets_specific_user(self):
+    def test_requires_token_to_get_specific_user(self):
         response = self.client.get("/v1/users/1")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 403)
 
     def fails_to_registers_user_without_password(self):
         data=dict(firstname="awesl")
