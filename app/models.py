@@ -18,7 +18,7 @@ class User(db.Model):
     firstname = db.Column(db.String, nullable=False)
     lastname = db.Column(db.String, nullable=False)
     password = db.Column(db.String(128))
-    type = db.Column(db.SmallInteger, default=Type.client.value, nullable=False)
+    type = db.Column(db.SmallInteger, default=Type.admin.value, nullable=False)
     id_type = db.Column(db.String, nullable=False)
     id_number = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.Integer, nullable=True)
@@ -75,6 +75,11 @@ class User(db.Model):
     def get_all():
         return User.query.all()
 
+    def delete_user(id):
+        user = User.query.filter_by(id=id).first()
+        db.session.delete(user)
+        db.session.commit()
+
     def __repr__(self):
         return '<User {}>'.format(self.firstname)
 
@@ -107,6 +112,11 @@ class Accounts(db.Model):
 
     def get_all():
         return Accounts.query.all()
+
+    def delete_account(id):
+        account = User.query.filter_by(id=id).first()
+        db.session.delete(account)
+        db.session.commit()
 
     def __repr__(self):
         return '<Account balance {}>'.format(self.balance)
