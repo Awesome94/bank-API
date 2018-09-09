@@ -18,7 +18,7 @@ class User(db.Model):
     firstname = db.Column(db.String, nullable=False)
     lastname = db.Column(db.String, nullable=False)
     password = db.Column(db.String(128))
-    type = db.Column(db.SmallInteger, default=Type.admin.value, nullable=False)
+    type = db.Column(db.SmallInteger, default=Type.client.value, nullable=False)
     id_type = db.Column(db.String, nullable=False)
     id_number = db.Column(db.String, nullable=False)
     phone_number = db.Column(db.Integer, nullable=True)
@@ -113,10 +113,13 @@ class Accounts(db.Model):
     def get_all():
         return Accounts.query.all()
 
-    def delete_account(id):
-        account = User.query.filter_by(id=id).first()
-        db.session.delete(account)
-        db.session.commit()
+    def delete_account(account_id):
+        account = Accounts.query.filter_by(id=account_id).first()
+        if account:
+            db.session.delete(account)
+            db.session.commit()
+            return jsonify({'message':'Account deleted successfully'})
+        return jsonify({'message':'No account found'})
 
     def __repr__(self):
         return '<Account balance {}>'.format(self.balance)
