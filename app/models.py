@@ -75,6 +75,11 @@ class User(db.Model):
     def get_all():
         return User.query.all()
 
+    def delete_user(id):
+        user = User.query.filter_by(id=id).first()
+        db.session.delete(user)
+        db.session.commit()
+
     def __repr__(self):
         return '<User {}>'.format(self.firstname)
 
@@ -107,6 +112,14 @@ class Accounts(db.Model):
 
     def get_all():
         return Accounts.query.all()
+
+    def delete_account(account_id):
+        account = Accounts.query.filter_by(id=account_id).first()
+        if account:
+            db.session.delete(account)
+            db.session.commit()
+            return jsonify({'message':'Account deleted successfully'})
+        return jsonify({'message':'No account found'})
 
     def __repr__(self):
         return '<Account balance {}>'.format(self.balance)

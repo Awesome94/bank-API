@@ -9,31 +9,31 @@ data = {
             "$ref": "/v1/login"
         },
         "logout": {
-            "$ref": "/v2/logout"
+            "$ref": "/v1/logout"
         },
         "users": {
             "$ref": "/v1/users/"
         },
         "user": {
-            "$ref": "/v2/users/<id>"
+            "$ref": "/v1/users/<id>"
         },
         "accounts": {
-            "$ref": "/v2/accounts/"
+            "$ref": "/v1/accounts/"
         },
         "account": {
-            "$ref": "/v2/accounts/<id>"
+            "$ref": "/v1/accounts/<id>"
         },
         "balance": {
-            "$ref": "/v2/account/balance/<id>"
+            "$ref": "/v1/account/balance/<id>"
         },
         "deposit": {
-            "$ref": "/v2/account/deposit/<id>"
+            "$ref": "/v1/account/deposit/<id>"
         },
         "withdraw": {
-            "$ref": "/v2/account/withdraw"
+            "$ref": "/v1/account/withdraw"
         },
         "Transfer": {
-            "$ref": "/v2/account/transfer/<id>#"
+            "$ref": "/v1/account/transfer/<id>#"
         },
         "events": {
             "$ref": "/v1/events/"
