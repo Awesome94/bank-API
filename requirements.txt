@@ -1,8 +1,6 @@
 flask==0.12.4
-Flask-Potion==0.15.0
 flask-sqlalchemy==2.2
 flask-bcrypt
-flask_principal
 requests
 psycopg2-binary~=2.7.4
 pip==10.0.1
@@ -15,7 +13,6 @@ Flask-Testing==0.7.1
 pytest~=3.5.1
 pytest-flask==0.10.0
 python-dotenv~=0.8.2
-twilio~=6.15.1
 flask-marshmallow==0.9.0
 marshmallow==2.15.4
 marshmallow-sqlalchemy==0.14.1
