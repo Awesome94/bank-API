@@ -2,7 +2,6 @@
 
 Bank RestFul APIs built with Flask and Python.
 
--   API public documentation can be found here. https://bit.ly/2CrOv0K
 -   Live API can be found here. https://bit.ly/2CC9wpz.
 -   Trello Board. https://bit.ly/2MgIKT9
 
