@@ -1,4 +1,4 @@
-flask==0.12.4
+flask==1.0
 flask-sqlalchemy==2.2
 flask-bcrypt
 requests
